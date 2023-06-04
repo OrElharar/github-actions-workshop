@@ -1,0 +1,48 @@
+name: Deploy Project
+on: [push, workflow_dispatch]
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repo code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: cd ./section-2-exercise && npm ci
+      - name: Run Lint
+        run: cd ./section-2-exercise && npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repo code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: cd ./section-2-exercise && npm ci
+      - name: Run tests
+        run: cd ./section-2-exercise && npm run test
+  deploy:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repo code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+      - name: Install dependencies
+        run: cd ./section-2-exercise && npm ci
+      - name: Build project
+        run: cd ./section-2-exercise && npm run build
+      - name: Deploy
+        run: "echo 'Deploying...'"
+
+
+
