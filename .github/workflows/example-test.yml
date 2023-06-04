@@ -6,16 +6,14 @@ jobs:
     steps:
       - name: Get repo code
         uses: actions/checkout@v3
-      - name: Enter the directory
-        run: cd front-app-example
       - name: Install NodeJS
         uses: actions/setup-node@v3
         with:
           node-version: 18
       - name: Install dependencies
-        run: npm install
+        run: npm --prefix ./front-app-example ci ./front-app-example
       - name: Run tests
-        run: npm test
+        run: npm --prefix ./front-app-example test ./front-app-example
 
 
 
