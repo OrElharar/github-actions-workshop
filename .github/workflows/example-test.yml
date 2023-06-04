@@ -10,10 +10,12 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
+      - name: Enter the directory
+        run: cd front-app-example
       - name: Install dependencies
-        run: npm --prefix ./front-app-example ci ./front-app-example
+        run: npm ci
       - name: Run tests
-        run: npm --prefix ./front-app-example test ./front-app-example
+        run: npm test
 
 
 
