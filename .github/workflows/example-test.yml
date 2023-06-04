@@ -11,9 +11,9 @@ jobs:
         with:
           node-version: 18
       - name: Install dependencies
-        run: npm --prefix ./front-app-example ci ./front-app-example
+        run: cd ./front-app-example && npm ci
       - name: Run tests
-        run: npm --prefix ./front-app-example test ./front-app-example
+        run: cd ./front-app-example && npm run test
 
 
 
