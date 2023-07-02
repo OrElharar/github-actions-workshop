@@ -1,3 +1,6 @@
+# This workflow demonstrates how to deploy a project to a server.
+# It is an example for an artifact upload and download, job outputs, and dependency caching.
+
 # What is an artifact?
 # An artifact is a file or collection of files produced during a workflow run.
 # You can use artifacts to pass data between jobs in a workflow or persist data after a workflow run has ended.
@@ -6,6 +9,11 @@
 # A job output is a value that a job in a workflow produces,
 # which you can use in the downstream jobs in the same workflow.
 # You can use job outputs to pass data between jobs in a workflow or persist data after a workflow run has ended.
+
+#What is Dependency Cashing?
+# Dependency caching is a feature that allows you to store dependencies on the runner,
+# which persists across workflow runs and can dramatically improve workflow execution time.
+# Dependency caching is supported for npm, yarn, and pip dependencies.
 
 name: Section 5 - Deploy website
 on:
@@ -18,6 +26,11 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Cash dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./section-5-demo/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: cd ./section-5-demo && npm ci
       - name: Lint code
@@ -32,6 +45,11 @@ jobs:
     steps:
       - name: Get code
         uses: actions/checkout@v3
+      - name: Cash dependencies
+        uses: actions/cache@v3
+        with:
+          path: ./section-5-demo/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: cd ./section-5-demo && npm ci
       - name: Build website
