@@ -3,6 +3,14 @@ on:
   pull_request:
     types:
       - opened
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - 'dev-*' # Matches any branch that starts with 'dev-' up to the next '/' (e.g. dev-1, dev-2, dev-3, etc.)
+      - 'feature/**' # Matches any branch that starts with 'feature/' (e.g. feature/1, feature/2, feature/button/1, etc.)
+    paths-ignore:
+      - '.github/workflows/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest
