@@ -25,6 +25,14 @@ jobs:
         run: cd ./section-5-demo && npm ci
       - name: Build website
         run: cd ./section-5-demo && npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: |
+            ./section-5-demo/dist
+#         this way it is possible to provided multiple paths, else it would be:
+#         path: ./section-5-demo/dist
   deploy:
     needs: build
     runs-on: ubuntu-latest
