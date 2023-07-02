@@ -1,0 +1,42 @@
+# This workflow demonstrates how to deploy a project to a server.
+# It is an example for env variables, and secret management.
+
+name: Section 6 Demo
+on:
+  push:
+    branches:
+      - main
+      - dev
+env:
+  MONGODB_DB_NAME: ${{ secrets.MONGODB_DB_NAME }}
+  MONGODB_USERNAME: ${{ secrets.MONGODB_USERNAME }}
+  MONGODB_PASSWORD: ${{ secrets.MONGODB_PASSWORD }}
+  MONGODB_CLUSTER_ADDRESS: ${{ secrets.MONGODB_CLUSTER_ADDRESS }}
+  PORT: ${{ secrets.PORT }}
+jobs:
+  test:
+    environment: testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: npm-deps-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: cd ./section-6-demo && npm ci
+      - name: Run server
+        run: cd ./section-6-demo && npm start & npx wait-on http://127.0.0.1:${{ secrets.PORT }}
+      - name: Run tests
+        run: cd ./section-6-demo && npm test
+      - name: Output information
+        run: echo "..."
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output information
+        run: |        
+          echo "..."
