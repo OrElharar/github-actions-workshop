@@ -14,6 +14,7 @@
 # Dependency caching is a feature that allows you to store dependencies on the runner,
 # which persists across workflow runs and can dramatically improve workflow execution time.
 # Dependency caching is supported for npm, yarn, and pip dependencies.
+# Using hashFiles(some-file) will cause the cache to be restored only if this file has not changed since the last run.
 
 name: Section 5 - Deploy website
 on:
