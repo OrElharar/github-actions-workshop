@@ -1,3 +1,12 @@
+# What is an artifact?
+# An artifact is a file or collection of files produced during a workflow run.
+# You can use artifacts to pass data between jobs in a workflow or persist data after a workflow run has ended.
+
+# What is a job output?
+# A job output is a value that a job in a workflow produces,
+# which you can use in the downstream jobs in the same workflow.
+# You can use job outputs to pass data between jobs in a workflow or persist data after a workflow run has ended.
+
 name: Section 5 - Deploy website
 on:
   push:
@@ -18,6 +27,8 @@ jobs:
   build:
     needs: test
     runs-on: ubuntu-latest
+    outputs:
+      script-filename: ${{ steps.publish-js-filename.outputs.script-filename }}
     steps:
       - name: Get code
         uses: actions/checkout@v3
@@ -25,6 +36,9 @@ jobs:
         run: cd ./section-5-demo && npm ci
       - name: Build website
         run: cd ./section-5-demo && npm run build
+      - name: Publish JS filename
+        id: publish-js-filename
+        run: find section-5-demo/dist/assets/*.js -type f -execdir echo 'script-filename={}' >> $GITHUB_OUTPUT ';'
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -43,5 +57,7 @@ jobs:
           name: dist-files
       - name: Output Contents
         run: ls
+      - name: Output filename
+        run: echo ${{ needs.build.outputs.script-filename }}
       - name: Deploy
         run: echo "Deploying..."
