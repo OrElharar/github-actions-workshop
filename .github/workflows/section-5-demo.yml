@@ -29,7 +29,7 @@ jobs:
       - name: Cash dependencies
         uses: actions/cache@v3
         with:
-          path: ./section-5-demo/.npm
+          path: ~/.npm
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: cd ./section-5-demo && npm ci
@@ -48,8 +48,8 @@ jobs:
       - name: Cash dependencies
         uses: actions/cache@v3
         with:
-          path: ./section-5-demo/.npm
-          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
       - name: Install dependencies
         run: cd ./section-5-demo && npm ci
       - name: Build website
