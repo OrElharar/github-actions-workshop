@@ -88,7 +88,7 @@ jobs:
         with:
           name: dist-files
       - name: Output contents
-        run: cd dist && ls
+        run: cd section-7-demo && ls
       - name: Deploy
         run: echo "Deploying..."
   report:
