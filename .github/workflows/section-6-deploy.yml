@@ -1,5 +1,21 @@
 # This workflow demonstrates how to deploy a project to a server.
-# It is an example for env variables, and secret management.
+# It is an example for env variables, and secret management, and Eniorments.
+# The Secrets are stored in the repository settings.
+# Github -> Repository -> Settings -> Secrets
+
+# Environment are stored in the repository settings.
+# Github -> Repository -> Settings -> Eniorments
+# Then to implefy the chosen Eniorment, you can use the following syntax:
+# jobs:
+#   test:
+#     environment: testing
+#     ...
+#   build:
+#     environment: production
+#     ...
+#   deploy:
+#     environment: production
+#     ...
 
 name: Section 6 Demo
 on:
