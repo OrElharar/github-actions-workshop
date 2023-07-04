@@ -47,6 +47,7 @@ jobs:
         if: steps.cache.outputs.cache-hit != 'true'
         run: cd section-7-demo && npm ci
       - name: Test code
+#        continue-on-error: true
         id: run-tests
         run: cd ./section-7-demo && npm run test
       - name: Upload test report
