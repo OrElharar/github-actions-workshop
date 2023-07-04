@@ -1,8 +1,22 @@
+#  This is the reusable workflow that will be used by the other workflows.
+#  In addition, it is possible to aff images to the workflow.
+
 name: Reusable Deploy
-on: workflow_call
+on:
+  workflow_call:
+    inputs:
+      artificat-name:
+        description: 'Name of artifact to download'
+        required: false
+        default: 'dist-files'
+        type: string
 jobs:
     deploy:
       runs-on: ubuntu-latest
       steps:
+        - name: Get repo code
+          uses: actions/download-artifact@v3
+          with:
+            name: $${{ inputs.artifact-name }}
         - name: Output info
           run: echo "Deploying & Uploading..."
