@@ -1,0 +1,98 @@
+# This deployment demonstrate Controlling Workflow & Job Execution
+# It is done by using the if conditional statement, as shown in the following example.
+
+# Special Conditional Functions:
+#   always() - returns true
+#   cancelled() - returns true if the workflow or job was cancelled
+#   failure() - returns true when any previous step failed
+#   success() - returns true if none of the previous steps failed
+
+# The conditional statement can be either on a job level or on a step level.
+# On the job level it make sense to use the needs keyword.
+
+name: Website Deployment
+on:
+  push:
+    branches:
+      - main
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: cd ./section-7-demo && npm ci
+      - name: Lint code
+        run: cd ./section-7-demo && npm run lint
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run:  cdc ./section-7-demo && npm ci
+      - name: Test code
+        id: run-tests
+        run: cd ./section-7-demo && npm run test
+      - name: Upload test report
+        if: failure() && steps.run-tests.outcome == 'failure'
+        uses: actions/upload-artifact@v3
+        with:
+          name: test-report
+          path: ./section-7-demo/test.json
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get code
+        uses: actions/checkout@v3
+      - name: Cache dependencies
+        id: cache
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: deps-node-modules-${{ hashFiles('**/package-lock.json') }}
+      - name: Install dependencies
+        run: cd ./section-7-demo && npm ci
+      - name: Build website
+        id: build-website
+        run: cd ./section-7-demo && npm run build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-files
+          path: ./section-7-demo/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-files
+      - name: Output contents
+        run: cd dist && ls
+      - name: Deploy
+        run: echo "Deploying..."
+  report:
+    needs: [lint, deploy]
+    if: failure()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Output Information
+        run: |
+          echo "Something went wrong"
+          echo "{{ github }}"
