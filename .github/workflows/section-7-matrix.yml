@@ -1,0 +1,30 @@
+# This section will demonstrate the matrix feature.
+# The matrix feature allows us to run the same job multiple times with different configurations.
+
+name: Matrix Demo
+on: push
+jobs:
+  build:
+    strategy:
+      matrix:
+        node-version: [14, 16, 18]
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - node-version: 14
+            os: ubuntu-latest
+        exclude:
+          - node-version: 18
+            os: windows-latest
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get Code
+        uses: actions/checkout@v3
+      - name: Install NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install dependencies
+        run: cd ./section-7-matrix && npm ci
+      - name: Build project
+        run: cd ./section-7-matrix && npm run build
+
