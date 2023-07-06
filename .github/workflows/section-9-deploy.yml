@@ -65,7 +65,7 @@ jobs:
         run: ls
       - name: Deploy site
         run: echo "Deploying..."
-  insormation:
+  information:
     runs-on: ubuntu-latest
     steps:
       - name: Get code
