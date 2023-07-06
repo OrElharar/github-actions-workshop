@@ -60,7 +60,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: dist-files
-          path: ./dist
+          path: .section-9-demo/dist
       - name: Output contents
         run: ls
       - name: Deploy site
