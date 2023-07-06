@@ -10,10 +10,13 @@ jobs:
       - name: Get code
         uses: actions/checkout@v3
       - name: Load & cache dependencies
+        id: cache-deps
         uses: ./.github/actions/cached-deps
 #       For manipulate the action input, use the following syntax:
 #       with:
 #         should-cache: 'false'
+      - name: Output information
+        run:  echo "Cache used? ${{ steps.cache-deps.outputs.used-cache }}"
       - name: Lint code
         run: cd section-9-demo && npm run lint
   test:
