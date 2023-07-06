@@ -11,6 +11,9 @@ jobs:
         uses: actions/checkout@v3
       - name: Load & cache dependencies
         uses: ./.github/actions/cached-deps
+#       For manipulate the action input, use the following syntax:
+#       with:
+#         should-cache: 'false'
       - name: Lint code
         run: cd section-9-demo && npm run lint
   test:
