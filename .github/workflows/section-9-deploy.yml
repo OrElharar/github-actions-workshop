@@ -51,6 +51,7 @@ jobs:
           name: dist-files
           path: ./section-9-demo/dist
   deploy:
+    environment: testing
     needs: build
     runs-on: ubuntu-latest
     steps:
