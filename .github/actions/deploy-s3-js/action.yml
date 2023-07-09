@@ -12,6 +12,9 @@ inputs:
     description: 'The folder where the static files are located'
     required: false
     default: 'dist'
+outputs:
+  website-url:
+    description: 'The URL of the deployed website'
 runs:
 # pre: for setting up whatever needed.
   using: 'node16'
